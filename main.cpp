@@ -10,18 +10,21 @@ class Pig_Latin_linked_List{
 private:
     node * head;
 public:
-    Pig_Latin_linked_List();
+    Pig_Latin_linked_List(){
+        head = new node;
+        head->next = 0;
+    }
 
     void add(char character){
         node * cu = head;
         
         //if first node in system
-        if (cu == 0){
+        /*(if (cu->next == 0){
             cu = new node;
             cu->n = character;
             cu->next = 0;
             return;
-        }
+        }*/
         
         while (cu->next != 0) {
             cu = cu->next;
@@ -39,6 +42,8 @@ public:
             cout<<cu->n;
             cu= cu->next;
         }
+        //for the last thing in the Linked list
+        cout<<cu->n;
     }
     
 };
