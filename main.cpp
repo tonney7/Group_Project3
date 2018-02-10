@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 struct node{
@@ -9,77 +10,197 @@ struct node{
 class Pig_Latin_linked_List{
 private:
     node * head;
+    node * cu;
+    node * temp;
+
 public:
     Pig_Latin_linked_List(){
-        head = new node;
-        head->next = 0;
+
+        head = nullptr;
+        cu = nullptr;
+        temp = nullptr;
+
+
+    }
+    char getFirstNodeData()
+    {
+        return head->n;
     }
 
     void add(char character){
-        node * cu = head;
-        
+
+        node *no = new node;
+        no->n = character;
+        no->next = nullptr;
+
         //if first node in system
-        /*(if (cu->next == 0){
-            cu = new node;
-            cu->n = character;
-            cu->next = 0;
-            return;
-        }*/
-        
-        while (cu->next != 0) {
+        if (head == nullptr){
+
+            head = no;
+
+        }
+        else
+        {
+            cu = head;
+
+            while (cu->next != nullptr) {
+                cu = cu->next;
+            }
+
+            cu->next = no;
+
+        }
+
+    }
+
+
+    void print(){
+
+        cu = head;
+
+        while (cu != nullptr){
+
+            cout << cu->n;
             cu = cu->next;
         }
-        cu->next = new node;
-        cu = cu->next;
-        cu->n = character;
-        cu->next = 0;
-    }
-    
-    
-    void print(){
-        node * cu = head;
-        while (cu->next != 0){
-            cout<<cu->n;
-            cu= cu->next;
-        }
         //for the last thing in the Linked list
-        cout<<cu->n;
+
     }
-    
+    void toEnd()
+    {
+        cu = head;
+        temp = head->next;
+
+        while (cu->next != nullptr) {
+                cu = cu->next;
+            }
+
+        cu->next = head;
+        head = temp;
+
+        cu = cu->next;
+        cu->next = nullptr;
+
+
+
+    }
+
+
+
 };
+bool isVowel(char c)
+{
+        string vowels = "AEIOUaeiou";
+
+        size_t found = vowels.find(c);
+
+        if(found == string::npos)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+}
+bool isY(string c)
+{
+    size_t found1 = c.find('Y');
+    size_t found2 = c.find('y');
+
+        if((found1 == string::npos)&&(found2 == string::npos))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+}
 
 int main() {
-    cout<<"Please Enter in 1 word at a time (ie no spaces):"<<endl;
-    
-    bool done = false;
+    bool done = false, ivowel = false, noVowels = true, yCase = false;
     string Word;
-    string StopPhrase = "Qwerty";
-    Pig_Latin_linked_List LINKEDLIST;
-    
-    while (!done){
-        cout<<"What is your word (to stop, type in Qwerty)"<<endl;
-        cin>>Word;
-        // if stoping word
-        if (Word == StopPhrase){
-            done = true;
-            continue;
-        }
-        for (int i = 0; i < Word.size();i++){
-            LINKEDLIST.add(Word[i]);
-        }
-        LINKEDLIST.add(' ');
+    Pig_Latin_linked_List llist;
+
+    cout << "Enter word: ";
+    cin >> Word;
+
+    if(isVowel(Word[0]))
+    {
+        ivowel = true;
+
+        noVowels = false;
+
     }
-    
-    cout<<endl<<endl<<endl;
-    LINKEDLIST.print();
-    cout<<"\nDONE"<<endl;
-    
-    
-    
-    
-    
-    
-    
+
+    for(int i = 0; (i < Word.length()) && (noVowels == true); i++)
+    {
+
+        if(isVowel(Word[i]))
+        {
+            noVowels = false;
+
+        }
+
+    }
+
+    if((isY(Word))&&(noVowels == true))
+    {
+        yCase = true;
+    }
+
+
+
+    for(int i = 0; i < Word.length(); i++)
+    {
+        llist.add(Word[i]);
+    }
+
+    //llist.print();
+
+    if(ivowel == true)
+    {
+        llist.add('-');
+        llist.add('w');
+        llist.add('a');
+        llist.add('y');
+    }
+    else if((ivowel == false) && (noVowels == false))
+    {
+        llist.add('-');
+
+        while(!isVowel(llist.getFirstNodeData()))
+        {
+            llist.toEnd();
+        }
+
+        llist.add('a');
+        llist.add('y');
+    }
+    else if(yCase == true)
+    {
+        llist.add('-');
+
+        while((llist.getFirstNodeData() != 'Y' )&&(llist.getFirstNodeData() != 'y'))
+        {
+            llist.toEnd();
+        }
+
+        llist.add('a');
+        llist.add('y');
+    }
+    else
+    {
+        llist.add('-');
+        llist.add('w');
+        llist.add('a');
+        llist.add('y');
+    }
+
+    llist.print();
+
+
     /*
     //trying out Linked List
     node * head = new node;
@@ -90,7 +211,7 @@ int main() {
         cu = cu->next;
         cu->n = i;
     }
-    
+
     cu = head;
     for (int i = 0; i < 11;i++){
         cout<<cu->n<<" ";
