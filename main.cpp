@@ -67,7 +67,7 @@ int main() {
         for (int i = 0; i < Word.size();i++){
             LINKEDLIST.add(Word[i]);
         }
-  
+        LINKEDLIST.add(' ');
     }
     
     cout<<endl<<endl<<endl;
